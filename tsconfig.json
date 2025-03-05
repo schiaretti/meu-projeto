@@ -10,6 +10,7 @@
     "strict": true,
     "module": "esnext",
     "resolveJsonModule": true
+   
   },
   "include": [
     "src"

@@ -11,7 +11,9 @@ function App() {
       <BrowserRouter>
 
     <header className='bg-blue-900 text-center text-white p-4 shadow-md rounded-md '>
-      <h1 className='text-2xl font-bold text-center'>Sistema de fretes</h1>
+      <h1 className='text-2xl font-bold text-center'>
+      Exact Position
+     </h1>
     </header>
 
       <Routes>

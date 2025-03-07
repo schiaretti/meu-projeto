@@ -52,7 +52,7 @@ function Maps() {
           </MapContainer>
         </div>
 
-        <div className="mt-2 flex gap-2">
+        <div className="mt-4">
           <button
             type="button"
             onClick={() => {
@@ -61,21 +61,9 @@ function Maps() {
                 navigate(`/CadastroPoste?lat=${markerPosition[0]}&lng=${markerPosition[1]}`);
               }
             }}
-            className="w-full bg-blue-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition"
+            className="w-full bg-blue-500 text-white py-2 px-5 rounded-lg shadow-md hover:bg-blue-700 transition"
           >
             Salvar Localização
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              if (markerPosition) {
-                setMarkerPosition([markerPosition[0], markerPosition[1]]);
-              }
-            }}
-            className="w-full bg-green-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition"
-          >
-            Ir para o Marcador
           </button>
         </div>
       </section>

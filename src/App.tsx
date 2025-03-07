@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/Login';
 import Maps from "./pages/Maps";
+import CadastroPoste from "./pages/Cadastro";
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
      
         <Route path='/'element={<Login/>}/>
         <Route path="/maps"element={<Maps/>}/>
+        <Route path="/CadastroPoste"element={<CadastroPoste/>}/>
+        
        
       </Routes>
        

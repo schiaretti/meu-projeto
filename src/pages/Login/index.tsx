@@ -27,7 +27,7 @@ function Login() {
       // Fazendo a requisição para o backend
       //const { data } = await api.post<{ token: string }>("/login", { email, senha });
 
-      // Redirecionando para a página de logística
+      // Redirecionando para a página de maps
       navigate("/maps");
 
     } catch (err) {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import useGetLocation from "../../hooks/useGetLocation";
+import { useNavigate } from "react-router-dom";
 
 function RecenterMap({ coords }: { coords: LatLngExpression }) {
   const map = useMap();
@@ -10,7 +11,7 @@ function RecenterMap({ coords }: { coords: LatLngExpression }) {
 
   useEffect(() => {
     if (firstLoad) {
-      map.setView(coords, 18); // Apenas no primeiro carregamento
+      map.setView(coords, 18);
       setFirstLoad(false);
     }
   }, [coords, map, firstLoad]);
@@ -20,7 +21,8 @@ function RecenterMap({ coords }: { coords: LatLngExpression }) {
 
 function Maps() {
   const { coords } = useGetLocation();
-  const [markerPosition, setMarkerPosition] = useState<LatLngExpression | null>(null);
+  const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (coords) {
@@ -33,55 +35,52 @@ function Maps() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-slate-500 p-8 border border-slate-400 rounded-lg shadow-lg">
-      
-      {/* Título */}
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Cadastro de postes</h2>
-  
-      {/* Seção do formulário */}
+    <div className="max-w-md mx-auto mt-2 bg-slate-200 p-8 border border-slate-300 rounded-lg shadow-lg">
       <section className="bg-white p-6 border border-slate-400 rounded-lg shadow-lg">
-        
-        {/* Mapa com tamanho fixo */}
         <div className="w-full h-[500px] md:h-[400px] rounded-md shadow-md overflow-hidden">
-          <MapContainer 
-            center={coords} 
-            zoom={13} 
-            className="w-full h-full"
-          >
+          <MapContainer center={coords} zoom={13} className="w-full h-full">
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            
             <RecenterMap coords={coords} />
-  
             {markerPosition && (
-              <CircleMarker
-                center={markerPosition}
-                radius={10}
-                color="blue"
-                fillColor="blue"
-                fillOpacity={0.9}
-              >
-                <Popup>Posição atual do usuário</Popup>
+              <CircleMarker center={markerPosition} radius={10} color="blue" fillColor="blue" fillOpacity={0.9}>
+                <Popup>Localização selecionada</Popup>
               </CircleMarker>
             )}
           </MapContainer>
         </div>
-  
-        {/* Botão separado do mapa */}
-        <button 
-          type="button" 
-          onClick={() => console.log("Salvar coordenadas:", markerPosition)}
-          className="mt-6 w-full bg-blue-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition"
-        >
-          Salvar Localização
-        </button>
-  
+
+        <div className="mt-2 flex gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              if (markerPosition) {
+                console.log("Salvando localização:", markerPosition);
+                navigate(`/CadastroPoste?lat=${markerPosition[0]}&lng=${markerPosition[1]}`);
+              }
+            }}
+            className="w-full bg-blue-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition"
+          >
+            Salvar Localização
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (markerPosition) {
+                setMarkerPosition([markerPosition[0], markerPosition[1]]);
+              }
+            }}
+            className="w-full bg-green-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition"
+          >
+            Ir para o Marcador
+          </button>
+        </div>
       </section>
     </div>
   );
-  
 }
 
 export default Maps;

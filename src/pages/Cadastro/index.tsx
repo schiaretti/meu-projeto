@@ -13,6 +13,7 @@ function CadastroPoste() {
     const [longitude, setLongitude] = useState<number | null>(null);
 
 
+
     // Recupera os parâmetros da URL e converte para float
     useEffect(() => {
         const lat = searchParams.get("lat");
@@ -207,6 +208,17 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+<ComboBox
+                    label="Estrutura da postiação"
+                    options={[
+                        { value: "Unilateral", label: "Unilateral" },
+                        { value: "Bilateral", label: "Bilateral" },
+                        { value: "Canteiro central", label: "Canteiro central" },
+                      
+                    ]}
+                    onChange={handleMaterialChange}
+                />
+
 
                 <ComboBox
                     label="Selecione o Braço"
@@ -277,7 +289,7 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
-                <ComboBox 
+                <ComboBox
                     label="Tipo de Rede"
                     options={[
                         { value: "Aérea BT", label: "Aérea BT" },
@@ -307,7 +319,6 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
-               <Componentebotao/>
 
                 <ComboBox
                     label="Tipo de Via"
@@ -464,6 +475,42 @@ function CadastroPoste() {
                     Cadastrar Ponto
                 </button>
             </form>
+
+            <div className="flex gap-4 mb-3 p-2">
+                {/* Botão "Foto do poste" */}
+                <div className="flex-1">
+                    <Componentebotao buttonText="Foto Poste" minPhotos={3} />
+                </div>
+
+                {/* Botão "Salvar" */}
+                <div className="flex-1">
+                    <button className="w-full flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition">
+                        <span role="img" aria-label="save" className="mr-2">
+                            💾
+                        </span>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+
+            <div className="flex gap-4 mb-3 p-2">
+                {/* Botão "Foto da Árvore" */}
+                <div className="flex-1">
+                    <Componentebotao buttonText="Foto Árvore" minPhotos={3} />
+                </div>
+
+                {/* Botão "Salvar" */}
+                <div className="flex-1">
+                    <button className="w-full flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition">
+                        <span role="img" aria-label="save" className="mr-2">
+                            💾
+                        </span>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+
+
         </div >
     );
 }

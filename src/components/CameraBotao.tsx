@@ -1,13 +1,17 @@
 import React, { useRef, useState } from 'react';
 
-const Componentebotao: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [photo, setPhoto] = useState<string | null>(null);
+interface ComponentebotaoProps {
+  buttonText: string; // Texto do botão
+  minPhotos?: number; // Número mínimo de fotos (opcional, padrão é 3)
+}
 
-  // Função para capturar a foto
+const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos = 3 }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [photos, setPhotos] = useState<string[]>([]); // Array para armazenar as fotos
+
   const handleTakePhoto = async () => {
     try {
-      // Acessa a câmera do dispositivo
+      // Solicita acesso à câmera
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -30,51 +34,66 @@ const Componentebotao: React.FC = () => {
 
         // Converte a imagem do canvas para uma URL de dados
         const dataUrl = canvas.toDataURL('image/png');
-        setPhoto(dataUrl);
+        setPhotos((prevPhotos) => [...prevPhotos, dataUrl]); // Adiciona a nova foto ao array
       }
 
       // Para a câmera após tirar a foto
       stream.getTracks().forEach((track) => track.stop());
     } catch (err) {
       console.error("Erro ao acessar a câmera:", err);
+
+      // Verifica se o erro é do tipo Error
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError') {
+          alert("Permissão para acessar a câmera foi negada. Por favor, permita o acesso à câmera nas configurações do navegador.");
+        } else if (err.name === 'NotFoundError') {
+          alert("Nenhuma câmera foi encontrada no dispositivo.");
+        } else if (err.name === 'NotReadableError') {
+          alert("A câmera está em uso por outro aplicativo ou não pode ser acessada.");
+        } else {
+          alert("Erro ao acessar a câmera. Verifique as permissões e tente novamente.");
+        }
+      } else {
+        alert("Erro desconhecido ao acessar a câmera.");
+      }
     }
   };
 
   return (
     <div>
-      {/* Botão para tirar a foto */}
       <button
-        onClick={() => {
-          console.log("Botão clicado!");
-          handleTakePhoto(); // Adiciona a lógica de captura da foto
-        }}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#007bff",
-          color: "white",
-          borderRadius: "5px",
-          border: "none",
-          cursor: "pointer",
-        }}
+        type="button"
+        onClick={handleTakePhoto}
+        disabled={photos.length >= minPhotos} // Desabilita o botão após atingir o mínimo de fotos
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         <span role="img" aria-label="camera">
           📸
         </span>{" "}
-        Tirar Foto
+        {buttonText} ({photos.length}/{minPhotos})
       </button>
 
       {/* Vídeo oculto para acessar a câmera */}
-      <video ref={videoRef} autoPlay playsInline style={{ display: 'none' }}></video>
+      <video ref={videoRef} autoPlay playsInline className="hidden"></video>
 
-      {/* Exibe a foto capturada */}
-      {photo && (
-        <div>
-          <h2>Foto Capturada</h2>
-          <img
-            src={photo}
-            alt="Captured"
-            style={{ maxWidth: '50%', height: 'auto' }}
-          />
+      {/* Exibe as fotos capturadas */}
+      {photos.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-2">Fotos Capturadas:</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {photos.map((photo, index) => (
+              <div key={index} className="relative">
+                <img
+                  src={photo}
+                  alt={`Captured ${index + 1}`}
+                  className="w-full h-auto rounded-lg shadow-lg"
+                />
+                <span className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+                  {index + 1}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

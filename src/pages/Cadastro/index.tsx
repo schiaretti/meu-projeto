@@ -208,13 +208,13 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
-<ComboBox
+                <ComboBox
                     label="Estrutura da postiação"
                     options={[
                         { value: "Unilateral", label: "Unilateral" },
                         { value: "Bilateral", label: "Bilateral" },
                         { value: "Canteiro central", label: "Canteiro central" },
-                      
+
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -477,9 +477,9 @@ function CadastroPoste() {
             </form>
 
             <div className="flex gap-4 mb-3 p-2">
-                {/* Botão "Foto do poste" */}
+                {/* Botão "Foto do Poste" */}
                 <div className="flex-1">
-                    <Componentebotao buttonText="Foto Poste" minPhotos={3} />
+                    <Componentebotao buttonText="Foto do Poste " minPhotos={3} />
                 </div>
 
                 {/* Botão "Salvar" */}
@@ -496,7 +496,7 @@ function CadastroPoste() {
             <div className="flex gap-4 mb-3 p-2">
                 {/* Botão "Foto da Árvore" */}
                 <div className="flex-1">
-                    <Componentebotao buttonText="Foto Árvore" minPhotos={3} />
+                    <Componentebotao buttonText="Foto da Árvore" minPhotos={3} />
                 </div>
 
                 {/* Botão "Salvar" */}

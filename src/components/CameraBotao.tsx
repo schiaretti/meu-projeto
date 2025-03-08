@@ -8,11 +8,19 @@ interface ComponentebotaoProps {
 const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos = 3 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [photos, setPhotos] = useState<string[]>([]); // Array para armazenar as fotos
+  const [cameraMode, setCameraMode] = useState<'front' | 'back'>('back'); // Estado da câmera
 
   const handleTakePhoto = async () => {
     try {
+      // Configurações da câmera
+      const constraints = {
+        video: {
+          facingMode: cameraMode === 'front' ? 'user' : 'environment', // Alterna entre frontal e traseira
+        },
+      };
+
       // Solicita acesso à câmera
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
@@ -59,19 +67,35 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
     }
   };
 
+  const toggleCamera = () => {
+    setCameraMode((prevMode) => (prevMode === 'front' ? 'back' : 'front')); // Alterna entre frontal e traseira
+  };
+
   return (
     <div>
-      <button
-        type="button"
-        onClick={handleTakePhoto}
-        disabled={photos.length >= minPhotos} // Desabilita o botão após atingir o mínimo de fotos
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        <span role="img" aria-label="camera">
-          📸
-        </span>{" "}
-        {buttonText} ({photos.length}/{minPhotos})
-      </button>
+      <div className="flex gap-2 mb-2">
+        {/* Botão para alternar a câmera */}
+        <button
+          type="button"
+          onClick={toggleCamera}
+          className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition"
+        >
+          {cameraMode === 'front' ? 'Câmera Frontal' : 'Câmera Traseira'}
+        </button>
+
+        {/* Botão para tirar foto */}
+        <button
+          type="button"
+          onClick={handleTakePhoto}
+          disabled={photos.length >= minPhotos} // Desabilita o botão após atingir o mínimo de fotos
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          <span role="img" aria-label="camera">
+            📸
+          </span>{" "}
+          {buttonText} ({photos.length}/{minPhotos})
+        </button>
+      </div>
 
       {/* Vídeo oculto para acessar a câmera */}
       <video ref={videoRef} autoPlay playsInline className="hidden"></video>

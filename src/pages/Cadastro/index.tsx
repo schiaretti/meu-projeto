@@ -277,7 +277,7 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
-                <ComboBox
+                <ComboBox 
                     label="Tipo de Rede"
                     options={[
                         { value: "Aérea BT", label: "Aérea BT" },

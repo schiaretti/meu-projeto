@@ -509,8 +509,13 @@ function CadastroPoste() {
             </form>
 
             <div className="flex flex-col gap-4 mb-3 p-2">
+
+                    <h2>Foto do poste</h2>
+
                 {/* Componente para "Foto do Poste" */}
                 <Componentebotao buttonText="Foto do Poste" minPhotos={3} />
+
+                <h2>Foto da Árvore</h2>
 
                 {/* Componente para "Foto da Árvore" */}
                 <Componentebotao buttonText="Foto da Árvore" minPhotos={3} />

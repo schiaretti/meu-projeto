@@ -10,10 +10,17 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
   const [photos, setPhotos] = useState<string[]>([]); // Array para armazenar as fotos
   const [cameraMode, setCameraMode] = useState<'front' | 'back'>('back'); // Estado da câmera
   const [isCameraOpen, setIsCameraOpen] = useState(false); // Estado para controlar se a câmera está aberta
+  const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
 
   // Função para abrir a câmera
   const openCamera = async () => {
     try {
+      // Verifica se o navegador suporta a API de MediaDevices
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setError("Seu navegador não suporta acesso à câmera.");
+        return;
+      }
+
       // Configurações da câmera
       const constraints = {
         video: {
@@ -24,8 +31,10 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
       // Solicita acesso à câmera
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       if (videoRef.current) {
+        console.log("Stream atribuído ao elemento de vídeo:", stream); // Verifique no console
         videoRef.current.srcObject = stream;
         setIsCameraOpen(true); // Abre a câmera
+        setError(null); // Limpa mensagens de erro
       }
     } catch (err) {
       console.error("Erro ao acessar a câmera:", err);
@@ -33,16 +42,16 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
       // Verifica se o erro é do tipo Error
       if (err instanceof Error) {
         if (err.name === 'NotAllowedError') {
-          alert("Permissão para acessar a câmera foi negada. Por favor, permita o acesso à câmera nas configurações do navegador.");
+          setError("Permissão para acessar a câmera foi negada. Por favor, permita o acesso à câmera nas configurações do navegador.");
         } else if (err.name === 'NotFoundError') {
-          alert("Nenhuma câmera foi encontrada no dispositivo.");
+          setError("Nenhuma câmera foi encontrada no dispositivo.");
         } else if (err.name === 'NotReadableError') {
-          alert("A câmera está em uso por outro aplicativo ou não pode ser acessada.");
+          setError("A câmera está em uso por outro aplicativo ou não pode ser acessada.");
         } else {
-          alert("Erro ao acessar a câmera. Verifique as permissões e tente novamente.");
+          setError("Erro ao acessar a câmera. Verifique as permissões e tente novamente.");
         }
       } else {
-        alert("Erro desconhecido ao acessar a câmera.");
+        setError("Erro desconhecido ao acessar a câmera.");
       }
     }
   };
@@ -85,6 +94,9 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
 
   return (
     <div>
+      {/* Mensagem de erro */}
+      {error && <div className="text-red-500 mb-2">{error}</div>}
+
       {/* Botão para abrir a câmera */}
       {!isCameraOpen && (
         <button
@@ -107,7 +119,7 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
             ref={videoRef}
             autoPlay
             playsInline
-            className="w-full h-auto rounded-lg shadow-lg"
+            className="w-full h-auto rounded-lg shadow-lg border-2 border-red-500" // Adicione uma borda para visualização
           ></video>
 
           {/* Botões de controle da câmera */}
@@ -121,7 +133,7 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
               <span role="img" aria-label="camera">
                 🔄
               </span>
-              Alternar Câmera 
+              Alternar Câmera
             </button>
 
             {/* Botão para tirar foto */}

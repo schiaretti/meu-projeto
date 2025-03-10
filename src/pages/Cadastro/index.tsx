@@ -155,7 +155,7 @@ function CadastroPoste() {
                 </h2>
 
                 <ComboBox
-                    label="Poste com Transformador"
+                    label="Poste com Transformador ?"
                     options={[
                         { value: "Sim", label: "Sim" },
                         { value: "Não", label: "Não" },
@@ -165,7 +165,17 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Poste com medição"
+                    label="Poste com medição ?"
+                    options={[
+                        { value: "Sim", label: "Sim" },
+                        { value: "Não", label: "Não" },
+
+                    ]}
+                    onChange={handleMaterialChange}
+                />
+
+                <ComboBox
+                    label="Poste com telecom ?"
                     options={[
                         { value: "Sim", label: "Sim" },
                         { value: "Não", label: "Não" },
@@ -180,15 +190,17 @@ function CadastroPoste() {
                         { value: "Circular concreto", label: "Circular concreto" },
                         { value: "Madeira", label: "Madeira" },
                         { value: "Concreto DT", label: "Concreto DT" },
-                        { value: "Metal", label: "Metal" },
+                        { value: "Circular metal", label: "Circular metal" },
                         { value: "Ornamental", label: "Ornamental" },
+                        { value: "Circular fibra", label: "Circular fibra" },
+                        { value: "Desconhecido", label: "Desconhecido" },
 
                     ]}
                     onChange={handleMaterialChange}
                 />
 
                 <ComboBox
-                    label="Altura do poste"
+                    label="Altura do poste ?"
                     options={[
                         { value: "5", label: "5" },
                         { value: "6", label: "6" },
@@ -209,11 +221,12 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Estrutura da postiação"
+                    label="Estrutura da postiação ?"
                     options={[
                         { value: "Unilateral", label: "Unilateral" },
                         { value: "Bilateral", label: "Bilateral" },
                         { value: "Canteiro central", label: "Canteiro central" },
+                        { value: "Praça", label: "Praça" },
 
                     ]}
                     onChange={handleMaterialChange}
@@ -221,7 +234,7 @@ function CadastroPoste() {
 
 
                 <ComboBox
-                    label="Selecione o Braço"
+                    label="Selecione o tipo do braço ?"
                     options={[
                         { value: "Braço Curto", label: "Braço Curto" },
                         { value: "Braço Médio", label: "Braço Médio" },
@@ -229,15 +242,15 @@ function CadastroPoste() {
                         { value: "Level 1", label: "Level 1" },
                         { value: "Level 2", label: "Level 2" },
                         { value: "Suporte com 1", label: "Suporte com 1" },
-                        { value: "Pétala com 2", label: "Pétala com 2" },
-                        { value: "Pétala com 3", label: "Pétala com 3" },
-                        { value: "Pétala com 4", label: "Pétala com 4" },
+                        { value: "Suporte com 2", label: "Suporte com 2" },
+                        { value: "Suporte com 3", label: "Suporte com 3" },
+                        { value: "Suporte com 4", label: "Suporte com 4" },
                     ]}
                     onChange={handleMaterialChange}
                 />
 
                 <ComboBox
-                    label="Tamanho o Braço"
+                    label="Tamanho o Braço ?"
                     options={[
                         { value: "0.50", label: "0.50" },
                         { value: "1.20", label: "1.20" },
@@ -250,7 +263,7 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Quantidade de Pontos"
+                    label="Quantidade de Pontos ?"
                     options={[
                         { value: "1", label: "1" },
                         { value: "2", label: "2" },
@@ -261,7 +274,7 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Tipo da Lâmpada"
+                    label="Tipo da Lâmpada ?"
                     options={[
                         { value: "Vapor de Sodio 70 W", label: "Vapor de Sodio 70 W" },
                         { value: "Vapor de Sodio 100 W", label: "Vapor de Sodio 100 W" },
@@ -271,7 +284,7 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Tipo do Reator"
+                    label="Tipo do Reator ?"
                     options={[
                         { value: "Reator Externo", label: "Reator Externo" },
                         { value: "Reator Integrado", label: "Reator Integrado" },
@@ -281,7 +294,7 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Tipo de Comando"
+                    label="Tipo de Comando ?"
                     options={[
                         { value: "Individual", label: "Individual" },
                         { value: "Coletivo", label: "Coletivo" },
@@ -290,7 +303,7 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Tipo de Rede"
+                    label="Tipo de Rede ?"
                     options={[
                         { value: "Aérea BT", label: "Aérea BT" },
                         { value: "Convencional", label: "Convencional" },
@@ -300,17 +313,18 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Tipo de Cabo"
+                    label="Tipo de Cabo ?"
                     options={[
+                        { value: "Alumínio Nú", label: "Alumínio Nú" },
+                        { value: "Alumínio isolado XLPE", label: "Alumínio isolado XLPE" },
                         { value: "Multiplexado", label: "Multiplexado" },
-                        { value: "Convencional", label: "Convencional" },
-                        { value: "Cobre", label: "Cobre" },
+                        { value: "Cobre Nú", label: "Cobre Nú" },
                     ]}
                     onChange={handleMaterialChange}
                 />
 
                 <ComboBox
-                    label="Número de fases"
+                    label="Número de fases ?"
                     options={[
                         { value: "Monofásico", label: "Monofásico" },
                         { value: "Bifásico", label: "Bifásico" },
@@ -319,9 +333,13 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <h2 className="col-span-1 md:col-span-2 text-lg font-semibold text-center bg-gray-200 p-2 rounded-md">
+                    Informações da via
+                </h2>
+
 
                 <ComboBox
-                    label="Tipo de Via"
+                    label="Tipo de Via ?"
                     options={[
                         { value: "Via Rápida", label: "Via Rápida" },
                         { value: "Via Local", label: "Via Local" },
@@ -333,7 +351,21 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Pavimento"
+                    label="Hierarquia de Via ?"
+                    options={[
+                        { value: "Acesso", label: "Acesso" },
+                        { value: "Alameda", label: "Alameda" },
+                        { value: "Avenida", label: "Avenida" },
+                        { value: "Estrada", label: "Estrada" },
+                        { value: "LMG", label: "LMG" },
+                        { value: "Rua", label: "Rua" },
+                        { value: "Travessa", label: "Travessa" },
+                    ]}
+                    onChange={handleMaterialChange}
+                />
+
+                <ComboBox
+                    label="Tipo de pavimento ?"
                     options={[
                         { value: "Asfalto", label: "Asfalto" },
                         { value: "Paralelepipedo", label: "Paralelepipedo" },
@@ -345,7 +377,7 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Quantidade de faixas"
+                    label="Quantidade de faixas ?"
                     options={[
                         { value: "1", label: "1" },
                         { value: "2", label: "2" },
@@ -369,7 +401,7 @@ function CadastroPoste() {
 
 
                 <ComboBox
-                    label="Tipo de Passeio"
+                    label="Tipo de Passeio ?"
                     options={[
                         { value: "Concreto", label: "Concreto" },
                         { value: "Pedra", label: "Pedra" },
@@ -392,7 +424,7 @@ function CadastroPoste() {
                 </div>
 
                 <ComboBox
-                    label="Canteiro central existente"
+                    label="Canteiro central existente ?"
                     options={[
                         { value: "Sim", label: "Sim" },
                         { value: "Não", label: "Não" },
@@ -420,7 +452,7 @@ function CadastroPoste() {
                 </div>
 
                 <ComboBox
-                    label="Árvore existente"
+                    label="Árvore existente ?"
                     options={[
                         { value: "Sim", label: "Sim" },
                         { value: "Não", label: "Não" },
@@ -429,7 +461,7 @@ function CadastroPoste() {
                 />
 
                 <ComboBox
-                    label="Porte e altura da árvore"
+                    label="Porte e altura da árvore ?"
                     options={[
                         { value: "Pequeno porte", label: "Pequeno porte" },
                         { value: "Médio porte", label: "Médio porte" },
@@ -457,7 +489,7 @@ function CadastroPoste() {
                 </div>
 
                 <ComboBox
-                    label="Finalidade da Instalação"
+                    label="Finalidade da Instalação ?"
                     options={[
                         { value: "Viária", label: "Viária" },
                         { value: "Praça", label: "Praça" },
@@ -476,39 +508,15 @@ function CadastroPoste() {
                 </button>
             </form>
 
-            <div className="flex gap-4 mb-3 p-2">
-                {/* Botão "Foto do Poste" */}
-                <div className="flex-1">
-                    <Componentebotao buttonText="Foto do Poste " minPhotos={3} />
-                </div>
+            <div className="flex flex-col gap-4 mb-3 p-2">
+                {/* Componente para "Foto do Poste" */}
+                <Componentebotao buttonText="Foto do Poste" minPhotos={3} />
 
-                {/* Botão "Salvar" */}
-                <div className="flex-1">
-                    <button className="w-full flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition">
-                        <span role="img" aria-label="save" className="mr-2">
-                            💾
-                        </span>
-                        Salvar
-                    </button>
-                </div>
+                {/* Componente para "Foto da Árvore" */}
+                <Componentebotao buttonText="Foto da Árvore" minPhotos={3} />
             </div>
 
-            <div className="flex gap-4 mb-3 p-2">
-                {/* Botão "Foto da Árvore" */}
-                <div className="flex-1">
-                    <Componentebotao buttonText="Foto da Árvore" minPhotos={3} />
-                </div>
 
-                {/* Botão "Salvar" */}
-                <div className="flex-1">
-                    <button className="w-full flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition">
-                        <span role="img" aria-label="save" className="mr-2">
-                            💾
-                        </span>
-                        Salvar
-                    </button>
-                </div>
-            </div>
 
 
         </div >

@@ -9,8 +9,10 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
   const videoRef = useRef<HTMLVideoElement>(null);
   const [photos, setPhotos] = useState<string[]>([]); // Array para armazenar as fotos
   const [cameraMode, setCameraMode] = useState<'front' | 'back'>('back'); // Estado da câmera
+  const [isCameraOpen, setIsCameraOpen] = useState(false); // Estado para controlar se a câmera está aberta
 
-  const handleTakePhoto = async () => {
+  // Função para abrir a câmera
+  const openCamera = async () => {
     try {
       // Configurações da câmera
       const constraints = {
@@ -23,30 +25,8 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        setIsCameraOpen(true); // Abre a câmera
       }
-
-      // Aguarda um breve momento para garantir que o vídeo esteja pronto
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Cria um canvas para capturar a foto
-      const canvas = document.createElement('canvas');
-      const video = videoRef.current;
-      if (video) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        const context = canvas.getContext('2d');
-        if (context) {
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        }
-
-        // Converte a imagem do canvas para uma URL de dados
-        const dataUrl = canvas.toDataURL('image/png');
-        setPhotos((prevPhotos) => [...prevPhotos, dataUrl]); // Adiciona a nova foto ao array
-      }
-
-      // Para a câmera após tirar a foto
-      stream.getTracks().forEach((track) => track.stop());
     } catch (err) {
       console.error("Erro ao acessar a câmera:", err);
 
@@ -67,38 +47,110 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
     }
   };
 
+  // Função para fechar a câmera
+  const closeCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop()); // Para todos os tracks da câmera
+      videoRef.current.srcObject = null;
+      setIsCameraOpen(false); // Fecha a câmera
+    }
+  };
+
+  // Função para tirar foto
+  const handleTakePhoto = () => {
+    const canvas = document.createElement('canvas');
+    const video = videoRef.current;
+    if (video) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const context = canvas.getContext('2d');
+      if (context) {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      }
+
+      // Converte a imagem do canvas para uma URL de dados
+      const dataUrl = canvas.toDataURL('image/png');
+      setPhotos((prevPhotos) => [...prevPhotos, dataUrl]); // Adiciona a nova foto ao array
+    }
+  };
+
+  // Função para alternar entre câmera frontal e traseira
   const toggleCamera = () => {
-    setCameraMode((prevMode) => (prevMode === 'front' ? 'back' : 'front')); // Alterna entre frontal e traseira
+    setCameraMode((prevMode) => (prevMode === 'front' ? 'back' : 'front'));
+    closeCamera(); // Fecha a câmera atual
+    openCamera(); // Reabre a câmera com o novo modo
   };
 
   return (
     <div>
-      <div className="flex gap-2 mb-2">
-        {/* Botão para alternar a câmera */}
+      {/* Botão para abrir a câmera */}
+      {!isCameraOpen && (
         <button
           type="button"
-          onClick={toggleCamera}
-          className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition"
-        >
-          {cameraMode === 'front' ? 'Câmera Frontal' : 'Câmera Traseira'}
-        </button>
-
-        {/* Botão para tirar foto */}
-        <button
-          type="button"
-          onClick={handleTakePhoto}
-          disabled={photos.length >= minPhotos} // Desabilita o botão após atingir o mínimo de fotos
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          onClick={openCamera}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
         >
           <span role="img" aria-label="camera">
             📸
-          </span>{" "}
-          {buttonText} ({photos.length}/{minPhotos})
+          </span>
+          Abrir Câmera
         </button>
-      </div>
+      )}
 
-      {/* Vídeo oculto para acessar a câmera */}
-      <video ref={videoRef} autoPlay playsInline className="hidden"></video>
+      {/* Exibe a câmera quando aberta */}
+      {isCameraOpen && (
+        <div className="mt-4">
+          {/* Vídeo da câmera */}
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="w-full h-auto rounded-lg shadow-lg"
+          ></video>
+
+          {/* Botões de controle da câmera */}
+          <div className="flex gap-2 mt-2">
+            {/* Botão para alternar câmera */}
+            <button
+              type="button"
+              onClick={toggleCamera}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition flex items-center justify-center gap-2"
+            >
+              <span role="img" aria-label="camera">
+                🔄
+              </span>
+              Alternar Câmera 
+            </button>
+
+            {/* Botão para tirar foto */}
+            <button
+              type="button"
+              onClick={handleTakePhoto}
+              disabled={photos.length >= minPhotos}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <span role="img" aria-label="camera">
+                📸
+              </span>
+              Tirar Foto
+            </button>
+
+            {/* Botão para fechar a câmera */}
+            <button
+              type="button"
+              onClick={closeCamera}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2"
+            >
+              <span role="img" aria-label="close">
+                ❌
+              </span>
+              Fechar Câmera
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Exibe as fotos capturadas */}
       {photos.length > 0 && (
@@ -118,6 +170,18 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ buttonText, minPhotos
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Botão "Salvar" aparece apenas após atingir o número mínimo de fotos */}
+      {photos.length >= minPhotos && (
+        <div className="mt-4">
+          <button className="w-full flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition">
+            <span role="img" aria-label="save" className="mr-2">
+              💾
+            </span>
+            Salvar
+          </button>
         </div>
       )}
     </div>

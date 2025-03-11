@@ -9,17 +9,16 @@ interface ComponentebotaoProps {
 const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [photos, setPhotos] = useState<{ url: string; coords: [number, number] | null }[]>([]); // Array para armazenar as fotos com coordenadas
-  const [cameraMode, setCameraMode] = useState<'front' | 'back'>('back'); // Estado da câmera
   const [stream, setStream] = useState<MediaStream | null>(null);
   const { coords } = useGetLocation(); // Usa o hook de geolocalização
 
-  // Inicializa a câmera quando o componente é montado ou quando a câmera é alternada
+  // Inicializa a câmera traseira quando o componente é montado
   useEffect(() => {
     const initializeCamera = async () => {
       try {
         const constraints = {
           video: {
-            facingMode: cameraMode === 'front' ? 'user' : 'environment', // Alterna entre frontal e traseira
+            facingMode: 'environment', // Usa apenas a câmera traseira
           },
         };
 
@@ -41,7 +40,7 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
         stream.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [cameraMode]);
+  }, []);
 
   // Função para capturar a foto
   const capturePhoto = () => {
@@ -59,11 +58,6 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
       const dataUrl = canvas.toDataURL('image/png');
       setPhotos((prevPhotos) => [...prevPhotos, { url: dataUrl, coords }]); // Adiciona a foto com as coordenadas
     }
-  };
-
-  // Alternar entre câmera frontal e traseira
-  const toggleCamera = () => {
-    setCameraMode((prevMode) => (prevMode === 'front' ? 'back' : 'front'));
   };
 
   // Tratamento de erros da câmera
@@ -92,18 +86,6 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
 
   return (
     <div>
-      {/* Botão para alternar a câmera */
-     /* <button
-        type="button"
-        onClick={toggleCamera}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 mb-2"
-      >
-        <span role="img" aria-label="camera">
-          📷
-        </span>
-        {cameraMode === 'front' ? 'Câmera Frontal' : 'Câmera Traseira'}
-      </button>
-
       {/* Vídeo da câmera */
      /* <div
         onClick={capturePhoto} // Captura a foto ao tocar na tela
@@ -115,20 +97,29 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
           playsInline
           style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
         ></video>
-        <div
+
+        {/* Ícone de câmera para capturar a foto */
+       /* <div
           style={{
             position: 'absolute',
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%)',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            color: 'white',
-            padding: '8px 16px',
-            borderRadius: '8px',
-            fontSize: '14px',
+            width: '60px',
+            height: '60px',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            border: '2px solid #fff',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
           }}
         >
-          Toque na tela para capturar a foto
+          <span role="img" aria-label="camera" style={{ fontSize: '24px' }}>
+            📸
+          </span>
         </div>
       </div>
 
@@ -238,6 +229,11 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
     }
   };
 
+  // Função para cancelar/remover a última foto capturada
+  const handleCancel = () => {
+    setPhotos((prevPhotos) => prevPhotos.slice(0, -1)); // Remove a última foto
+  };
+
   // Tratamento de erros da câmera
   const handleCameraError = (err: unknown) => {
     if (err instanceof Error) {
@@ -311,7 +307,7 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
                 <img
                   src={photo.url}
                   alt={`Captured ${index + 1}`}
-                  className="w-full h-auto rounded-lg shadow-lg"
+                  style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }} // Tamanho reduzido das fotos
                 />
                 <span className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
                   {index + 1}
@@ -325,12 +321,21 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
         </div>
       )}
 
-      {/* Botão "Salvar" aparece apenas após atingir o número mínimo de fotos */}
+      {/* Botões "Salvar" e "Cancelar" aparecem apenas após atingir o número mínimo de fotos */}
       {photos.length >= minPhotos && (
-        <div className="mt-4">
+        <div className="mt-4 flex gap-2">
+          <button
+            onClick={handleCancel}
+            className="flex-1 flex items-center justify-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition"
+          >
+            <span role="img" aria-label="cancel" className="mr-2">
+              ❌
+            </span>
+            Cancelar
+          </button>
           <button
             onClick={handleSave}
-            className="w-full flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition"
+            className="flex-1 flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition"
           >
             <span role="img" aria-label="save" className="mr-2">
               💾

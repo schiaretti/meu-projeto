@@ -5,7 +5,6 @@ import Componentebotao from "../../components/CameraBotao";
 import Checkbox from "../../components/checkBox";
 import useGetLocation from "../../hooks/useGetLocation";
 
-
 function CadastroPoste() {
     const [searchParams] = useSearchParams();
     const [endereco, setEndereco] = useState<string>("Buscando endereço...");
@@ -17,8 +16,6 @@ function CadastroPoste() {
 
     // Usando o hook useGetLocation
     const { coords } = useGetLocation(isLastPost);
-
-
 
     // Recupera os parâmetros da URL e converte para float
     useEffect(() => {
@@ -73,8 +70,6 @@ function CadastroPoste() {
         console.log("Material selecionado:", selectedValue);
     };
 
-
-
     return (
         <div>
             {/* Input para o endereço */}
@@ -88,8 +83,6 @@ function CadastroPoste() {
                 />
             </div>
 
-
-
             {/* Input para o CEP */}
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">CEP</label>
@@ -100,8 +93,6 @@ function CadastroPoste() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
-
-
 
             {/* Input para a Cidade */}
             <div className="mb-4">
@@ -114,8 +105,6 @@ function CadastroPoste() {
                 />
             </div>
 
-
-
             {/* Inputs para Latitude e Longitude */}
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
@@ -127,8 +116,6 @@ function CadastroPoste() {
                 />
             </div>
 
-
-
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
                 <input
@@ -139,16 +126,11 @@ function CadastroPoste() {
                 />
             </div>
 
-
-
             <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none hover:bg-slate-200 mb-4"
                 placeholder="Número"
                 type="number"
             />
-
-
-
 
             <ComboBox
                 label="Selecione"
@@ -161,8 +143,6 @@ function CadastroPoste() {
                 onChange={handleMaterialChange}
                 className="mb-4"
             />
-
-
 
             {/* Formulário */}
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -177,7 +157,6 @@ function CadastroPoste() {
                     options={[
                         { value: "Sim", label: "Sim" },
                         { value: "Não", label: "Não" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -189,7 +168,6 @@ function CadastroPoste() {
                     options={[
                         { value: "Sim", label: "Sim" },
                         { value: "Não", label: "Não" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -201,7 +179,6 @@ function CadastroPoste() {
                     options={[
                         { value: "Sim", label: "Sim" },
                         { value: "Não", label: "Não" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -218,7 +195,6 @@ function CadastroPoste() {
                         { value: "Ornamental", label: "Ornamental" },
                         { value: "Circular fibra", label: "Circular fibra" },
                         { value: "Desconhecido", label: "Desconhecido" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -255,7 +231,6 @@ function CadastroPoste() {
                         { value: "Bilateral", label: "Bilateral" },
                         { value: "Canteiro central", label: "Canteiro central" },
                         { value: "Praça", label: "Praça" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -288,7 +263,6 @@ function CadastroPoste() {
                         { value: "2.20", label: "2.20" },
                         { value: "3.20", label: "3.20" },
                         { value: "4.20", label: "4.20" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -325,7 +299,6 @@ function CadastroPoste() {
                     options={[
                         { value: "Reator Externo", label: "Reator Externo" },
                         { value: "Reator Integrado", label: "Reator Integrado" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -386,20 +359,18 @@ function CadastroPoste() {
                         label="Este poste é o último da rua?"
                         onChange={(isChecked) => {
                             console.log("Poste é o último da rua:", isChecked);
-                            // Aqui você pode adicionar a lógica para atualizar o estado ou fazer algo com o valor
+                            setIsLastPost(isChecked); // Atualiza o estado isLastPost
                         }}
                     />
                 </div>
 
                 <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
-            
                 <h2 className="col-span-1 md:col-span-2 text-lg font-semibold text-center bg-gray-200 p-2 rounded-md">
                     Informações da via
                 </h2>
 
                 <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
-
 
                 <ComboBox
                     label="Tipo de Via ?"
@@ -438,7 +409,6 @@ function CadastroPoste() {
                         { value: "Paralelepipedo", label: "Paralelepipedo" },
                         { value: "Terra", label: "Terra" },
                         { value: "Bloquete", label: "Bloquete" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -454,7 +424,6 @@ function CadastroPoste() {
                         { value: "4", label: "4" },
                         { value: "5", label: "5" },
                         { value: "6", label: "6" },
-
                     ]}
                     onChange={handleMaterialChange}
                 />
@@ -471,7 +440,6 @@ function CadastroPoste() {
                 </div>
 
                 <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
-
 
                 <ComboBox
                     label="Tipo de Passeio ?"
@@ -519,7 +487,6 @@ function CadastroPoste() {
                 </div>
 
                 <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
-
 
                 <div className="col-span-1 md:col-span-2">
                     <label className="block text-md font-medium text-gray-700 mb-4">Distância entre postes</label>
@@ -600,26 +567,15 @@ function CadastroPoste() {
             </form>
 
             <div className="flex flex-col gap-4 mb-3 mt-6 p-2">
-
                 <h2 className="font-bold text-center border rounded-lg bg-gray-200">Foto do Poste</h2>
-
-
-
                 {/* Componente para "Foto do Poste" */}
                 <Componentebotao minPhotos={3} />
 
                 <h2 className="font-bold text-center border rounded-lg bg-gray-200 mt-6">Foto Árvore</h2>
-
-
-
                 {/* Componente para "Foto da Árvore" */}
                 <Componentebotao minPhotos={1} />
             </div>
-
-
-
-
-        </div >
+        </div>
     );
 }
 

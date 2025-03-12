@@ -14,8 +14,7 @@ function CadastroPoste() {
     const [longitude, setLongitude] = useState<number | null>(null);
     const [isLastPost, setIsLastPost] = useState(false); // Estado para controlar se o poste é o último da rua
 
-    // Usando o hook useGetLocation
-    const { coords } = useGetLocation(isLastPost);
+    const { coords } = useGetLocation(isLastPost); // Passa o estado isLastPost para o hook
 
     // Recupera os parâmetros da URL e converte para float
     useEffect(() => {

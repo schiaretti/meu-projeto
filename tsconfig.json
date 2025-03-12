@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
     "lib": ["dom", "es2015"],
-    "allowJs": true,
-    "jsx": "react-jsx",  
-    "moduleResolution": "node", 
-    "esModuleInterop": true, 
+    "allowJs": false,
+    "jsx": "react-jsx", // Configuração correta para suportar JSX
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
     "module": "esnext",
-    "resolveJsonModule": true
-   
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": ["node"]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
-

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ComboBox from "../../components/ComboBox";
 import Componentebotao from "../../components/CameraBotao";
+import Checkbox from "../../components/checkBox";
+import useGetLocation from "../../hooks/useGetLocation";
 
 
 function CadastroPoste() {
@@ -11,6 +13,10 @@ function CadastroPoste() {
     const [cidade, setCidade] = useState<string>('');
     const [latitude, setLatitude] = useState<number | null>(null);
     const [longitude, setLongitude] = useState<number | null>(null);
+    const [isLastPost, setIsLastPost] = useState(false); // Estado para controlar se o poste é o último da rua
+
+    // Usando o hook useGetLocation
+    const { coords } = useGetLocation(isLastPost);
 
 
 
@@ -82,6 +88,8 @@ function CadastroPoste() {
                 />
             </div>
 
+
+
             {/* Input para o CEP */}
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">CEP</label>
@@ -92,6 +100,8 @@ function CadastroPoste() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
+
+
 
             {/* Input para a Cidade */}
             <div className="mb-4">
@@ -104,6 +114,8 @@ function CadastroPoste() {
                 />
             </div>
 
+
+
             {/* Inputs para Latitude e Longitude */}
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
@@ -115,6 +127,8 @@ function CadastroPoste() {
                 />
             </div>
 
+
+
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
                 <input
@@ -125,11 +139,15 @@ function CadastroPoste() {
                 />
             </div>
 
+
+
             <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none hover:bg-slate-200 mb-4"
                 placeholder="Número"
                 type="number"
             />
+
+
 
 
             <ComboBox
@@ -146,13 +164,13 @@ function CadastroPoste() {
 
 
 
-
-
             {/* Formulário */}
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <h2 className="col-span-1 md:col-span-2 text-lg font-semibold text-center bg-gray-200 p-2 rounded-md">
                     Informações do ponto de luz
                 </h2>
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Poste com Transformador ?"
@@ -164,6 +182,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Poste com medição ?"
                     options={[
@@ -174,6 +194,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Poste com telecom ?"
                     options={[
@@ -183,6 +205,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Poste de:"
@@ -198,6 +222,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Altura do poste ?"
@@ -220,6 +246,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Estrutura da postiação ?"
                     options={[
@@ -232,6 +260,7 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Selecione o tipo do braço ?"
@@ -249,6 +278,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Tamanho o Braço ?"
                     options={[
@@ -262,6 +293,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Quantidade de Pontos ?"
                     options={[
@@ -273,6 +306,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Tipo da Lâmpada ?"
                     options={[
@@ -282,6 +317,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Tipo do Reator ?"
@@ -293,6 +330,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Tipo de Comando ?"
                     options={[
@@ -301,6 +340,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Tipo de Rede ?"
@@ -311,6 +352,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Tipo de Cabo ?"
@@ -323,6 +366,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Número de fases ?"
                     options={[
@@ -333,9 +378,27 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
+                {/* Adicionando o Checkbox abaixo do ComboBox "Número de fases" */}
+                <div style={{ marginTop: '16px' }}>
+                    <Checkbox
+                        label="Este poste é o último da rua?"
+                        onChange={(isChecked) => {
+                            console.log("Poste é o último da rua:", isChecked);
+                            // Aqui você pode adicionar a lógica para atualizar o estado ou fazer algo com o valor
+                        }}
+                    />
+                </div>
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
+            
                 <h2 className="col-span-1 md:col-span-2 text-lg font-semibold text-center bg-gray-200 p-2 rounded-md">
                     Informações da via
                 </h2>
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
 
                 <ComboBox
@@ -349,6 +412,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Hierarquia de Via ?"
@@ -364,6 +429,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Tipo de pavimento ?"
                     options={[
@@ -375,6 +442,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Quantidade de faixas ?"
@@ -390,6 +459,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <div className="col-span-1 md:col-span-2">
                     <label className="block text-md font-medium text-gray-700 mb-4">Largura da via</label>
                     <input
@@ -398,6 +469,8 @@ function CadastroPoste() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
 
                 <ComboBox
@@ -412,7 +485,7 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
-
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <div className="col-span-1 md:col-span-2">
                     <label className="block text-md font-medium text-gray-700 mb-4">Largura da calçada de pedestre</label>
@@ -423,6 +496,8 @@ function CadastroPoste() {
                     />
                 </div>
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Canteiro central existente ?"
                     options={[
@@ -432,6 +507,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <div className="col-span-1 md:col-span-2">
                     <label className="block text-md font-medium text-gray-700 mb-4">Largura do canteiro central</label>
                     <input
@@ -440,6 +517,8 @@ function CadastroPoste() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
 
                 <div className="col-span-1 md:col-span-2">
@@ -451,6 +530,8 @@ function CadastroPoste() {
                     />
                 </div>
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <ComboBox
                     label="Árvore existente ?"
                     options={[
@@ -459,6 +540,8 @@ function CadastroPoste() {
                     ]}
                     onChange={handleMaterialChange}
                 />
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Porte e altura da árvore ?"
@@ -470,6 +553,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <div className="col-span-1 md:col-span-2">
                     <label className="block text-md font-medium text-gray-700 mb-4">Distância do poste ao meio Fio</label>
                     <input
@@ -479,6 +564,8 @@ function CadastroPoste() {
                     />
                 </div>
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <div className="col-span-1 md:col-span-2">
                     <label className="block text-md font-medium text-gray-700 mb-4">Distância do meio fio ao ponto de luz</label>
                     <input
@@ -487,6 +574,8 @@ function CadastroPoste() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
 
                 <ComboBox
                     label="Finalidade da Instalação ?"
@@ -500,6 +589,8 @@ function CadastroPoste() {
                     onChange={handleMaterialChange}
                 />
 
+                <hr style={{ margin: '16px 0', border: '0', borderTop: '3px solid #ccc' }} />
+
                 <button
                     type="submit"
                     className="col-span-1 md:col-span-2 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700 transition"
@@ -508,14 +599,18 @@ function CadastroPoste() {
                 </button>
             </form>
 
-            <div className="flex flex-col gap-4 mb-3 p-2">
+            <div className="flex flex-col gap-4 mb-3 mt-6 p-2">
 
-                    <h2 className="font-bold text-center">Foto do Poste</h2>
+                <h2 className="font-bold text-center border rounded-lg bg-gray-200">Foto do Poste</h2>
+
+
 
                 {/* Componente para "Foto do Poste" */}
                 <Componentebotao minPhotos={3} />
 
-                <h2 className="font-bold text-center">Foto Árvore</h2>
+                <h2 className="font-bold text-center border rounded-lg bg-gray-200 mt-6">Foto Árvore</h2>
+
+
 
                 {/* Componente para "Foto da Árvore" */}
                 <Componentebotao minPhotos={1} />

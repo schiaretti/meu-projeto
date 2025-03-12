@@ -60,9 +60,9 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
     }
   };
 
-  // Função para cancelar/remover a última foto capturada
-  const handleCancel = () => {
-    setPhotos((prevPhotos) => prevPhotos.slice(0, -1)); // Remove a última foto
+  // Função para cancelar/remover uma foto específica
+  const handleCancel = (index: number) => {
+    setPhotos((prevPhotos) => prevPhotos.filter((_, i) => i !== index)); // Remove a foto pelo índice
   };
 
   // Tratamento de erros da câmera
@@ -104,7 +104,7 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
         ></video>
 
         {/* Ícone de câmera para capturar a foto */
-       /* <div
+        /*<div
           style={{
             position: 'absolute',
             bottom: '20px',
@@ -129,10 +129,10 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
       </div>
 
       {/* Exibe as fotos capturadas com as coordenadas */
-     /* {photos.length > 0 && (
+      /*{photos.length > 0 && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold mb-2">Fotos Capturadas:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             {photos.map((photo, index) => (
               <div key={index} className="relative">
                 <img
@@ -140,9 +140,28 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
                   alt={`Captured ${index + 1}`}
                   style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }} // Tamanho reduzido das fotos
                 />
-                <span className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
-                  {index + 1}
-                </span>
+                {/* Botão "Cancelar" sobre a foto */
+                /*<button
+                  onClick={() => handleCancel(index)}
+                  style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                    borderRadius: '50%',
+                    width: '30px',
+                    height: '30px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span role="img" aria-label="cancel" style={{ color: 'white', fontSize: '16px' }}>
+                    ❌
+                  </span>
+                </button>
                 <p className="text-sm mt-2">
                   Coordenadas: {photo.coords ? `${photo.coords[0]}, ${photo.coords[1]}` : "Não disponível"}
                 </p>
@@ -152,21 +171,12 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
         </div>
       )}
 
-      {/* Botões "Salvar" e "Cancelar" aparecem apenas após atingir o número mínimo de fotos */
+      {/* Botão "Salvar" aparece apenas após atingir o número mínimo de fotos */
      /* {photos.length >= minPhotos && (
-        <div className="mt-4 flex gap-2">
-          <button
-            onClick={handleCancel}
-            className="flex-1 flex items-center justify-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition"
-          >
-            <span role="img" aria-label="cancel" className="mr-2">
-              ❌
-            </span>
-            Cancelar
-          </button>
+        <div className="mt-4">
           <button
             onClick={handleSave}
-            className="flex-1 flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition"
+            className="w-full flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition"
           >
             <span role="img" aria-label="save" className="mr-2">
               💾
@@ -189,11 +199,12 @@ interface ComponentebotaoProps {
   onSave?: (photos: { url: string; coords: [number, number] | null }[]) => void; // Função para salvar as fotos
 }
 
-const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave }) => {
+const CameraBotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [photos, setPhotos] = useState<{ url: string; coords: [number, number] | null }[]>([]); // Array para armazenar as fotos com coordenadas
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const { coords } = useGetLocation(); // Usa o hook de geolocalização
+  const [isLastPost, setIsLastPost] = useState(false); // Estado para controlar se o poste é o último da rua
+  const { coords } = useGetLocation(isLastPost); // Passa o estado isLastPost para o hook
 
   // Inicializa a câmera traseira quando o componente é montado
   useEffect(() => {
@@ -311,6 +322,18 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
         </div>
       </div>
 
+      {/* Checkbox para indicar que o poste é o último da rua */}
+      <div style={{ marginTop: '16px' }}>
+        <label>
+          <input
+            type="checkbox"
+            checked={isLastPost}
+            onChange={(e) => setIsLastPost(e.target.checked)}
+          />
+          Este poste é o último da rua?
+        </label>
+      </div>
+
       {/* Exibe as fotos capturadas com as coordenadas */}
       {photos.length > 0 && (
         <div className="mt-4">
@@ -330,7 +353,7 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
                     position: 'absolute',
                     top: '8px',
                     right: '8px',
-                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                    backgroundColor: 'rgba(255, 99, 71, 0.9)', // Vermelho mais claro
                     borderRadius: '50%',
                     width: '30px',
                     height: '30px',
@@ -372,4 +395,4 @@ const Componentebotao: React.FC<ComponentebotaoProps> = ({ minPhotos = 3, onSave
   );
 };
 
-export default Componentebotao;
+export default CameraBotao;
